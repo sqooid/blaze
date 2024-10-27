@@ -1,38 +1,30 @@
-# create-svelte
+# Blaze - Image sorter
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Blaze is a lightweight, minimalist application for sorting through large collections of images with as little effort as possible.
+Likely usecases include sorting through images from photo-shoots or AI generated content
 
-## Creating a project
+## Installation
 
-If you're seeing this, you've probably already done this step. Congrats!
+Download the latest installer release from Github [here](https://github.com/sqooid/blaze/releases/latest).
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Screenshots
 
-# create a new project in my-app
-npx sv create my-app
-```
+<img src="screenshots/screenshot-1.png" width=500>
+<img src="screenshots/screenshot-0.png" width=500>
+<img src="screenshots/screenshot-2.png" width=500>
+<img src="screenshots/screenshot-3.png" width=500>
 
-## Developing
+## Basic operation
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. Choose a source directory where images will be read from
+2. Configure bindings for various [actions](#actions)
+3. Configure other interface settings as desired
+4. Start sorting
 
-```bash
-npm run dev
+### Actions
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+**Delete** - delete file (unrecoverable)
 
-## Building
+**Move** - move file to another directory
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+**Skip** - move file to the back of the queue
