@@ -7,6 +7,6 @@
 
 <Toaster />
 <Header />
-<div class="mt-12 bg-background">
+<div class="mt-14 bg-background">
 	<slot></slot>
 </div>

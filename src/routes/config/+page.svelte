@@ -12,7 +12,7 @@
 
 <DirectoryBindingEditor directory="" key="" index={-1} bind:open={creatingNewBinding} hidden />
 
-<div class="flex flex-col gap-2 p-4">
+<div class="mx-auto flex max-w-prose flex-col gap-4 p-4">
 	<h2 class="h2">Configuration</h2>
 	<div class="flex items-center gap-2">
 		<h3 class="h3">Key bindings</h3>
