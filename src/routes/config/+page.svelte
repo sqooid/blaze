@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { appConfig, defaultDirectoryBinding } from '$lib/components/config';
 	import DirectoryBindingEditor from '$lib/components/directory-binding-editor.svelte';
+	import InterfaceConfig from '$lib/components/interface-config.svelte';
 	import { Button } from '$lib/components/ui/button';
 
 	const onClickAddBinding = () => {
@@ -33,5 +34,6 @@
 			hidden={false}
 		/>
 	{/each}
-	<div class="flex flex-col gap-2"></div>
+	<h3 class="h3">Interface</h3>
+	<InterfaceConfig />
 </div>

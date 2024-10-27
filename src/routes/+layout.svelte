@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { ModeWatcher } from 'mode-watcher';
+
 	import '../app.css';
 	import '../typography.css';
 	import { Toaster } from '$lib/components/ui/sonner';
@@ -13,7 +15,7 @@
 	let oldSource = $state('');
 	const addFile = (file: string) => {
 		console.log(`Added ${file}`);
-		appState.fileSet.add(file);
+		appState.addFile(file);
 	};
 
 	const isImage = (file: string) => /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(file);
@@ -42,7 +44,7 @@
 	let unwatchFn: () => void = () => {};
 	$effect(() => {
 		if (appConfig.value.sourceDirectory !== oldSource) {
-			appState.fileSet.clear();
+			appState.reset();
 			readWholeDir(appConfig.value.sourceDirectory);
 			unwatchFn?.();
 			watchDir(appConfig.value.sourceDirectory).then((fn) => {
@@ -53,6 +55,7 @@
 	setTimeout(() => {}, 5000);
 </script>
 
+<ModeWatcher />
 <Toaster />
 <Header />
 <div class="mt-14 bg-background">

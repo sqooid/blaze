@@ -38,6 +38,7 @@ export function persistedState<T>(key: string, initialValue: T, options: Options
 		storedValue = initialValue;
 	}
 
+	storedValue = { ...initialValue, ...storedValue };
 	let state = $state(storedValue);
 
 	function updateStorage(value: T) {

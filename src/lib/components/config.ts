@@ -2,6 +2,15 @@ import { writable } from 'svelte/store';
 import { persistedState } from './persisted-store.svelte';
 
 export const bindingActions = ['move', 'delete', 'skip'] as const;
+export const progressDisplays = ['bar', 'text'] as const;
+
+export const valuesToOptions = (values: Readonly<string[]>) =>
+	values.map((value) => ({ value, label: capitalise(value) }));
+
+export const getInitialOption = (options: { value: string; label: string }[], value: string) =>
+	options.find((option) => option.value === value);
+
+export const capitalise = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export type DirectoryBinding = {
 	key: string;
@@ -18,6 +27,8 @@ export const defaultDirectoryBinding: DirectoryBinding = {
 export type AppConfig = {
 	directoryBindings: DirectoryBinding[];
 	sourceDirectory: string;
+	progressDisplay: (typeof progressDisplays)[number];
+	actionToast: boolean;
 };
 
 export const persistedStore = <T>(key: string, value: T) => {
@@ -37,7 +48,9 @@ export const persistedStore = <T>(key: string, value: T) => {
 
 const defaultAppConfig: AppConfig = {
 	directoryBindings: [],
-	sourceDirectory: ''
+	sourceDirectory: '',
+	progressDisplay: 'bar',
+	actionToast: true
 };
 
 export const appConfig = persistedState('appConfig', defaultAppConfig);

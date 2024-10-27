@@ -17,6 +17,14 @@
           "path": "**"
         }
       ]
+    },
+    {
+      "identifier": "fs:write-all",
+      "allow": [
+        {
+          "path": "**"
+        }
+      ]
     }
   ]
 }
