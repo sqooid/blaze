@@ -7,6 +7,8 @@
 		appConfig,
 		bindingActions,
 		defaultDirectoryBinding,
+		getInitialOption,
+		valuesToOptions,
 		type DirectoryBinding
 	} from './config';
 	import * as Select from '$lib/components/ui/select';
@@ -75,11 +77,7 @@
 		open = false;
 	};
 
-	const capitalise = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-	const actionValues = bindingActions.map((action) => ({
-		value: action,
-		label: capitalise(action)
-	}));
+	const actionValues = valuesToOptions(bindingActions);
 
 	const onSelectedAction = (item: any) => {
 		action = item.value;
@@ -116,7 +114,10 @@
 			<kbd class="kbd">{key || 'None'}</kbd>
 
 			<span class="large">Action</span>
-			<Select.Root selected={actionValues[0]} onSelectedChange={onSelectedAction}>
+			<Select.Root
+				selected={getInitialOption(actionValues, action)}
+				onSelectedChange={onSelectedAction}
+			>
 				<Select.Trigger class="w-[180px]">
 					<Select.Value placeholder="Action" />
 				</Select.Trigger>
