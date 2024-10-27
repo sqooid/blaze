@@ -10,6 +10,13 @@
     "dialog:allow-open",
     "dialog:default",
     "dialog:default",
-    "fs:default"
+    {
+      "identifier": "fs:read-all",
+      "allow": [
+        {
+          "path": "**"
+        }
+      ]
+    }
   ]
 }

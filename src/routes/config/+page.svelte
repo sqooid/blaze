@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { appConfig } from '$lib/components/config';
+	import { appConfig, defaultDirectoryBinding } from '$lib/components/config';
 	import DirectoryBindingEditor from '$lib/components/directory-binding-editor.svelte';
 	import { Button } from '$lib/components/ui/button';
 
@@ -10,7 +10,12 @@
 	let creatingNewBinding = $state(false);
 </script>
 
-<DirectoryBindingEditor directory="" key="" index={-1} bind:open={creatingNewBinding} hidden />
+<DirectoryBindingEditor
+	{...defaultDirectoryBinding}
+	index={-1}
+	bind:open={creatingNewBinding}
+	hidden
+/>
 
 <div class="mx-auto flex max-w-prose flex-col gap-4 p-4">
 	<h2 class="h2">Configuration</h2>
@@ -22,6 +27,7 @@
 		<DirectoryBindingEditor
 			directory={binding.directory}
 			key={binding.key}
+			action={binding.action}
 			index={i}
 			open={false}
 			hidden={false}
