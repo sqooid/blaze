@@ -1,0 +1,98 @@
+.h1 {
+	@apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+}
+
+.h2 {
+	@apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+}
+
+.h3 {
+	@apply scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+
+.h4 {
+	@apply scroll-m-20 text-xl font-semibold tracking-tight;
+}
+
+.code {
+	@apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+}
+
+.p {
+	@apply leading-7 [&:not(:first-child)]:mt-6;
+}
+
+.blockquote {
+	@apply mt-6 border-l-2 pl-6 italic;
+}
+
+.ul {
+	@apply my-6 ml-6 list-disc [&>li]:mt-2;
+}
+
+.ol {
+	@apply my-6 ml-6 list-decimal [&>li]:mt-2;
+}
+
+.lead {
+	@apply text-lg font-semibold;
+}
+
+.large {
+	@apply text-lg font-semibold;
+}
+
+.small {
+	@apply text-sm font-medium leading-none;
+}
+
+.muted {
+	@apply text-sm text-muted-foreground;
+}
+
+.link {
+	@apply underline underline-offset-2 hover:opacity-80;
+}
+
+.kbd {
+	@apply w-fit rounded-lg border border-gray-200 bg-gray-100 px-2 py-1.5 text-xs font-semibold text-gray-800 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-100;
+}
+
+.floating {
+	width: max-content;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+button {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.typography {
+	& h1 {
+		@apply h1;
+	}
+	& h2 {
+		@apply h2;
+	}
+	& h3 {
+		@apply h3;
+	}
+	& h4 {
+		@apply h4;
+	}
+	& p {
+		@apply p;
+	}
+	& ul {
+		@apply ul;
+	}
+	& ol {
+		@apply ol;
+	}
+	& a {
+		@apply link;
+	}
+}

@@ -18,7 +18,8 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
-		"@tauri-apps/cli": "1",
+		"@tauri-apps/api": "^2.0.3",
+		"@tauri-apps/cli": "^2.0.4",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
 		"bits-ui": "^0.21.16",
@@ -49,5 +50,9 @@
 		"vite": "^5.0.3",
 		"vitest": "^2.0.4",
 		"zod": "^3.23.8"
+	},
+	"dependencies": {
+		"@tauri-apps/plugin-dialog": "~2.0.1",
+		"@tauri-apps/plugin-fs": "~2"
 	}
 }
