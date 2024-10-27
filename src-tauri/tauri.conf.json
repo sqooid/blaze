@@ -43,7 +43,7 @@
   "productName": "blaze",
   "mainBinaryName": "blaze",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.sqooid.blaze",
   "plugins": {},
   "app": {
     "windows": [
