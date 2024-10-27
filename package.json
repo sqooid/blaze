@@ -11,7 +11,8 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"tauri:build": "pnpm build && tauri build"
 	},
 	"devDependencies": {
 		"@internationalized/date": "^3.5.6",
