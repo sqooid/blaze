@@ -7,9 +7,13 @@
 </script>
 
 {#if !appConfig.value.sourceDirectory}
-	<div class="comment muted">Choose a source directory to start sorting</div>
+	<div class="fixed bottom-0 left-0 right-0 top-14 flex items-center">
+		<div class="comment muted">Choose a source directory to start sorting</div>
+	</div>
 {:else if appState.fileList.size === 0}
-	<div class="comment muted">Directory is empty</div>
+	<div class="fixed bottom-0 left-0 right-0 top-14 flex items-center">
+		<div class="comment muted">Directory is empty</div>
+	</div>
 {:else}
 	<div class="img">
 		<ImageDisplay />
@@ -31,6 +35,6 @@
 
 <style lang="postcss">
 	.comment {
-		@apply mx-auto mt-24 max-w-prose p-4 text-center;
+		@apply mx-auto max-w-prose p-4 text-center;
 	}
 </style>
