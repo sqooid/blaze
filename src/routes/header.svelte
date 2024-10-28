@@ -20,14 +20,14 @@
 </script>
 
 <div
-	class="fixed left-0 right-0 top-0 grid h-14 grid-cols-3 border-b border-solid border-primary border-opacity-10 px-2 shadow-sm"
+	class="fixed left-0 right-0 top-0 grid h-14 grid-cols-3 border-b border-solid border-primary border-opacity-10 bg-background px-2 shadow-sm"
 >
 	<Tooltip.Root openDelay={100} closeDelay={100}>
 		<Tooltip.Trigger>
 			<Button
 				variant="ghost"
 				on:click={onChooseFolder}
-				class="my-auto grid grid-cols-[auto_1fr] items-center justify-start gap-4 overflow-hidden"
+				class="my-auto grid max-w-full grid-cols-[auto_1fr] items-center justify-start gap-4 overflow-hidden"
 			>
 				<FolderOpen class="h-6 w-6" />
 				<div class="small text-wrap text-start">{appConfig.value.sourceDirectory}</div>
