@@ -31,7 +31,6 @@ Download the latest installer release from Github [here](https://github.com/sqoo
 
 ## Planned features
 
-- Image preloading (useful for network drives)
 - Show bindings on sorter with icons
 - Visual feedback on binding press
 - Animation on next image

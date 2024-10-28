@@ -3,7 +3,7 @@ import { appConfig } from './config';
 import { deleteFile, moveFile } from './fs';
 
 class AppState {
-	fileList = $state(new BlazeLinkedList<string>());
+	fileList = $state(new BlazeLinkedList<string>(10));
 	currentFile = $derived(this.fileList.first);
 
 	#totalCount = $state(0);

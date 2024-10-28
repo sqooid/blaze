@@ -47,9 +47,20 @@
 			runBinding(binding, name);
 		}
 	});
+
+	const preloadImages = $derived(
+		appState.fileList.frontBuffer.map((f) =>
+			convertFileSrc(`${appConfig.value.sourceDirectory}/${f}`)
+		)
+	);
 </script>
 
 <svelte:document on:keydown={keyListener} />
+
+{#each preloadImages as file}
+	<link rel="preload" href={file} as="image" />
+	<img src={file} alt="" class="h-0 w-0" />
+{/each}
 
 {#if currentImageName}
 	<div>
