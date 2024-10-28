@@ -20,6 +20,10 @@ class AppState {
 		return this.#totalCount - this.fileList.size;
 	}
 
+	get remaining() {
+		return this.fileList.size;
+	}
+
 	addFile(name: string) {
 		this.fileList.push(name);
 		this.#totalCount += 1;
