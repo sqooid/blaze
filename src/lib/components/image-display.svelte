@@ -34,9 +34,6 @@
 			appState.skipCurrent();
 			console.log(`Skipped ${name}`);
 		}
-		if (appConfig.value.actionToast) {
-			toast(action);
-		}
 	};
 
 	const keyListener = $derived(async (event: KeyboardEvent) => {

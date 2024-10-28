@@ -3,6 +3,17 @@ import { persistedState } from './persisted-store.svelte';
 
 export const bindingActions = ['move', 'delete', 'skip'] as const;
 export const progressDisplays = ['bar', 'text'] as const;
+export const reminderPositions = [
+	'top left',
+	'top right',
+	'bottom left',
+	'bottom right',
+	'top',
+	'bottom',
+	'left',
+	'right'
+] as const;
+export const reminderOrientations = ['horizontal', 'vertical'] as const;
 
 export const valuesToOptions = (values: Readonly<string[]>) =>
 	values.map((value) => ({ value, label: capitalise(value) }));
@@ -30,29 +41,18 @@ export type AppConfig = {
 	directoryBindings: DirectoryBinding[];
 	sourceDirectory: string;
 	progressDisplay: (typeof progressDisplays)[number];
-	actionToast: boolean;
-};
-
-export const persistedStore = <T>(key: string, value: T) => {
-	const { subscribe, set } = writable<T>(value);
-	const json = localStorage.getItem(key);
-	if (json) {
-		set(JSON.parse(json));
-	}
-	return {
-		subscribe,
-		set: (value: any) => {
-			set(value);
-			localStorage.setItem(key, JSON.stringify(value));
-		}
-	};
+	showBindingReminder: boolean;
+	reminderPosition: (typeof reminderPositions)[number];
+	reminderOrientation: (typeof reminderOrientations)[number];
 };
 
 const defaultAppConfig: AppConfig = {
 	directoryBindings: [],
 	sourceDirectory: '',
 	progressDisplay: 'bar',
-	actionToast: true
+	showBindingReminder: true,
+	reminderPosition: 'top left',
+	reminderOrientation: 'vertical'
 };
 
 export const appConfig = persistedState('appConfig', defaultAppConfig);

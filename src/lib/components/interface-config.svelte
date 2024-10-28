@@ -2,13 +2,37 @@
 	import * as Select from '$lib/components/ui/select';
 	import { Switch } from '$lib/components/ui/switch';
 
-	import { appConfig, getInitialOption, progressDisplays, valuesToOptions } from './config';
+	import {
+		appConfig,
+		getInitialOption,
+		progressDisplays,
+		reminderOrientations,
+		reminderPositions,
+		valuesToOptions
+	} from './config';
+	import InputTooltip from './input-tooltip.svelte';
 
 	const progressDisplayOptions = valuesToOptions(progressDisplays);
+	const reminderPositionOptions = valuesToOptions(reminderPositions);
+	const reminderOrientationOptions = valuesToOptions(reminderOrientations);
 </script>
 
+{#snippet interfaceLabel(name: string, tip: string)}
+	<div class="flex items-center gap-2">
+		<span class="large">{name}</span>
+		<InputTooltip>
+			{#snippet content()}
+				{tip}
+			{/snippet}
+		</InputTooltip>
+	</div>
+{/snippet}
+
 <div class="flex items-center justify-between gap-4">
-	<span class="large">Progress display</span>
+	{@render interfaceLabel(
+		'Progress display',
+		'Choose how the progress of sorting should be displayed'
+	)}
 	<Select.Root
 		selected={getInitialOption(progressDisplayOptions, appConfig.value.progressDisplay)}
 		onSelectedChange={(e) => (appConfig.value.progressDisplay = e?.value as any)}
@@ -25,6 +49,51 @@
 </div>
 
 <div class="flex items-center justify-between gap-4">
-	<span class="large">Show action toasts</span>
-	<Switch bind:checked={appConfig.value.actionToast} />
+	{@render interfaceLabel(
+		'Binding reminder',
+		'Choose whether the binding reminder should be shown on the screen'
+	)}
+	<Switch bind:checked={appConfig.value.showBindingReminder} />
 </div>
+
+{#if appConfig.value.showBindingReminder}
+	<div class="flex items-center justify-between gap-4">
+		{@render interfaceLabel(
+			'Binding reminder position',
+			'Choose where the binding reminder should be placed on the screen. This would depend on the aspect ratio of your window and images'
+		)}
+		<Select.Root
+			selected={getInitialOption(reminderPositionOptions, appConfig.value.reminderPosition)}
+			onSelectedChange={(e) => (appConfig.value.reminderPosition = e?.value as any)}
+		>
+			<Select.Trigger class="w-32">
+				<Select.Value placeholder="" />
+			</Select.Trigger>
+			<Select.Content>
+				{#each reminderPositionOptions as opt}
+					<Select.Item value={opt.value}>{opt.label}</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
+	</div>
+
+	<div class="flex items-center justify-between gap-4">
+		{@render interfaceLabel(
+			'Binding reminder orientation',
+			'Choose whether the binding reminder should be horizontal or vertical'
+		)}
+		<Select.Root
+			selected={getInitialOption(reminderOrientationOptions, appConfig.value.reminderOrientation)}
+			onSelectedChange={(e) => (appConfig.value.reminderOrientation = e?.value as any)}
+		>
+			<Select.Trigger class="w-32">
+				<Select.Value placeholder="" />
+			</Select.Trigger>
+			<Select.Content>
+				{#each reminderOrientationOptions as opt}
+					<Select.Item value={opt.value}>{opt.label}</Select.Item>
+				{/each}
+			</Select.Content>
+		</Select.Root>
+	</div>
+{/if}

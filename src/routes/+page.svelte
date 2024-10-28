@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BindingsReminder from '$lib/components/bindings-reminder.svelte';
 	import { appConfig } from '$lib/components/config';
 	import ImageDisplay from '$lib/components/image-display.svelte';
 	import { appState } from '$lib/components/state.svelte';
@@ -22,6 +23,10 @@
 			{appState.doneCount} / {appState.totalCount}
 		</div>
 	{/if}
+{/if}
+
+{#if appConfig.value.showBindingReminder}
+	<BindingsReminder />
 {/if}
 
 <style lang="postcss">

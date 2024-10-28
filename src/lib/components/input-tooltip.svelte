@@ -16,7 +16,7 @@
 			<Info class="h-3 w-3" />
 		</Button>
 	</Tooltip.Trigger>
-	<Tooltip.Content>
+	<Tooltip.Content class="max-w-prose">
 		{@render content()}
 	</Tooltip.Content>
 </Tooltip.Root>
