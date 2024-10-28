@@ -202,7 +202,7 @@
 			{#if binding.action === 'move'}
 				<span class="large">Target directory</span>
 				<Button variant="ghost" on:click={onClickChooseDirectory}>
-					<div class="small w-full text-start">{directory || 'None'}</div>
+					<div class="small w-full text-start">{binding.directory || 'None'}</div>
 				</Button>
 			{/if}
 
