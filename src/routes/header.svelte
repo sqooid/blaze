@@ -4,6 +4,7 @@
 	import { open as openPicker } from '@tauri-apps/plugin-dialog';
 	import { appConfig } from '$lib/components/config';
 	import ModeToggle from '$lib/components/mode-toggle.svelte';
+	import { page } from '$app/stores';
 
 	const onChooseFolder = async () => {
 		const directory = await openPicker({
@@ -30,7 +31,7 @@
 	</div>
 	<div class="flex items-center justify-end gap-x-2">
 		<ModeToggle />
-		<Button variant="ghost" href="/config">
+		<Button variant="ghost" href={$page.url.pathname === '/config' ? '/' : '/config'}>
 			<Settings class="h-6 w-6" />
 		</Button>
 	</div>
