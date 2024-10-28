@@ -1,11 +1,10 @@
 <script lang="ts">
+	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { toast } from 'svelte-sonner';
 	import { appConfig, type DirectoryBinding } from './config';
-	import { deleteFile, moveFile } from './fs';
 	import { appState } from './state.svelte';
-	import { convertFileSrc } from '@tauri-apps/api/core';
 
-	const currentImageName = $derived(appState.fileSet.values().next().value);
+	const currentImageName = $derived(appState.currentFile);
 	const srcDir = $derived(appConfig.value.sourceDirectory);
 	const currentImagePath = $derived(`${srcDir}/${currentImageName}`);
 	const currentImageUrl = $derived(convertFileSrc(currentImagePath));
@@ -19,30 +18,33 @@
 			{} as Record<string, DirectoryBinding>
 		)
 	);
+
+	const runBinding = (binding: DirectoryBinding, name: string) => {
+		let action = '';
+		if (binding.action === 'move') {
+			action = 'Moved';
+			appState.moveCurrent(binding.directory);
+			console.log(`Moved ${name} to ${binding.directory}`);
+		} else if (binding.action === 'delete') {
+			action = 'Deleted';
+			appState.deleteCurrent();
+			console.log(`Deleted ${name}`);
+		} else if (binding.action === 'skip') {
+			action = 'Skipped';
+			appState.skipCurrent();
+			console.log(`Skipped ${name}`);
+		}
+		if (appConfig.value.actionToast) {
+			toast(action);
+		}
+	};
+
 	const keyListener = $derived(async (event: KeyboardEvent) => {
 		if (!currentImageName) return;
 		if (bindMap[event.key]) {
 			const binding = bindMap[event.key];
 			const name = currentImageName;
-			let action = '';
-			if (binding.action === 'move') {
-				action = 'Moved';
-				moveFile(name, appConfig.value.sourceDirectory, binding.directory);
-				appState.removeFile(name);
-				console.log(`Moved ${name} to ${binding.directory}`);
-			} else if (binding.action === 'delete') {
-				action = 'Deleted';
-				deleteFile(name, appConfig.value.sourceDirectory);
-				appState.removeFile(name);
-				console.log(`Deleted ${name}`);
-			} else if (binding.action === 'skip') {
-				action = 'Skipped';
-				appState.skipFile(name);
-				console.log(`Skipped ${name}`);
-			}
-			if (appConfig.value.actionToast) {
-				toast(action);
-			}
+			runBinding(binding, name);
 		}
 	});
 </script>

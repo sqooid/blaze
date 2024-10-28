@@ -1,13 +1,15 @@
-import { SvelteSet as Set } from 'svelte/reactivity';
+import { BlazeLinkedList } from '$lib/linked-list.svelte';
+import { appConfig } from './config';
+import { deleteFile, moveFile } from './fs';
 
 class AppState {
-	currentFile = $state('');
-	fileSet = $state<Set<string>>(new Set());
+	fileList = $state(new BlazeLinkedList<string>());
+	currentFile = $derived(this.fileList.first);
 
 	#totalCount = $state(0);
 
 	get progress() {
-		return (this.#totalCount - this.fileSet.size) / this.#totalCount;
+		return (this.#totalCount - this.fileList.size) / this.#totalCount;
 	}
 
 	get totalCount() {
@@ -15,25 +17,46 @@ class AppState {
 	}
 
 	get doneCount() {
-		return this.#totalCount - this.fileSet.size;
+		return this.#totalCount - this.fileList.size;
 	}
 
 	addFile(name: string) {
-		this.fileSet.add(name);
-		this.#totalCount++;
+		this.fileList.push(name);
+		this.#totalCount += 1;
 	}
 
-	removeFile(name: string) {
-		this.fileSet.delete(name);
+	snapshotCurrent() {
+		return $state.snapshot(this.currentFile);
 	}
 
-	skipFile(name: string) {
-		this.fileSet.delete(name);
-		this.fileSet.add(name);
+	async deleteCurrent() {
+		const current = this.snapshotCurrent();
+		if (current) {
+			this.fileList.removeFirst();
+			await deleteFile(current, appConfig.value.sourceDirectory);
+		}
+	}
+
+	async moveCurrent(targetDir: string) {
+		const current = this.snapshotCurrent();
+		if (current) {
+			this.fileList.removeFirst();
+			console.log(current, appConfig.value.sourceDirectory, targetDir);
+
+			await moveFile(current, appConfig.value.sourceDirectory, targetDir);
+		}
+	}
+
+	skipCurrent() {
+		const current = this.snapshotCurrent();
+		if (current) {
+			this.fileList.push(current);
+			this.fileList.removeFirst();
+		}
 	}
 
 	reset() {
-		this.fileSet.clear();
+		this.fileList.clear();
 		this.#totalCount = 0;
 	}
 }

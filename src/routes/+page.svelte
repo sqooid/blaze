@@ -7,7 +7,7 @@
 
 {#if !appConfig.value.sourceDirectory}
 	<div class="comment muted">Choose a source directory to start sorting</div>
-{:else if appState.fileSet.size === 0}
+{:else if appState.fileList.size === 0}
 	<div class="comment muted">Directory is empty</div>
 {:else}
 	<div class="img">
