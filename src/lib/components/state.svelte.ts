@@ -55,6 +55,10 @@ class AppState {
 		}
 	}
 
+	removeCurrent() {
+		this.fileList.removeFirst();
+	}
+
 	reset() {
 		this.fileList.clear();
 		this.#totalCount = 0;

@@ -50,6 +50,12 @@
 			convertFileSrc(`${appConfig.value.sourceDirectory}/${f}`)
 		)
 	);
+
+	const onLoadError = (e: any) => {
+		console.log('Error loading image', e);
+		toast.error(`Error loading image, skipped ${currentImageName}`);
+		appState.removeCurrent();
+	};
 </script>
 
 <svelte:document on:keydown={keyListener} />
@@ -61,7 +67,7 @@
 
 {#if currentImageName}
 	<div>
-		<img src={currentImageUrl} alt="" class="img mx-auto" />
+		<img src={currentImageUrl} alt="" class="img mx-auto" onerror={onLoadError} />
 	</div>
 {/if}
 
