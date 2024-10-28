@@ -3,6 +3,7 @@
 	import { Button } from './ui/button';
 	import { open as openPicker } from '@tauri-apps/plugin-dialog';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Popover from '$lib/components/ui/popover';
 	import {
 		appConfig,
 		bindingActions,
@@ -12,16 +13,29 @@
 		type DirectoryBinding
 	} from './config';
 	import * as Select from '$lib/components/ui/select';
+	import EmojiSearch from './emoji-search.svelte';
+	import InputTooltip from './input-tooltip.svelte';
 
 	type Props = {
 		directory: string;
 		action: DirectoryBinding['action'];
 		key: string;
+		icon: string;
 		index: number;
 		open: boolean;
 		hidden: boolean;
 	};
-	let { directory, action, key, index, open = $bindable(false), hidden = false }: Props = $props();
+	let {
+		directory,
+		action,
+		key,
+		icon,
+		index,
+		open = $bindable(false),
+		hidden = false
+	}: Props = $props();
+
+	let binding = $state({ directory, action, key, icon });
 
 	const onClickChooseDirectory = async () => {
 		const newDirectory = await openPicker({
@@ -29,7 +43,7 @@
 			directory: true
 		});
 		if (newDirectory) {
-			directory = newDirectory;
+			binding.directory = newDirectory;
 		}
 	};
 
@@ -39,7 +53,7 @@
 		choosingKey = true;
 	};
 	const keyListener = (event: KeyboardEvent) => {
-		key = event.key;
+		binding.key = event.key;
 		document.removeEventListener('keydown', keyListener);
 		choosingKey = false;
 	};
@@ -54,20 +68,18 @@
 			return;
 		}
 		if (
-			appConfig.value.directoryBindings.some((binding, i) => i !== index && binding.key === key)
+			appConfig.value.directoryBindings.some((other, i) => i !== index && other.key === binding.key)
 		) {
 			toast.error('Key already in use');
 			return;
 		}
 		if (index === -1) {
-			appConfig.value.directoryBindings.push({ directory, key, action });
+			appConfig.value.directoryBindings.push(binding);
 		} else {
-			appConfig.value.directoryBindings[index] = { directory, key, action };
+			appConfig.value.directoryBindings[index] = $state.snapshot(binding);
 		}
 		if (index === -1) {
-			key = defaultDirectoryBinding.key;
-			directory = defaultDirectoryBinding.directory;
-			action = defaultDirectoryBinding.action;
+			binding = { ...defaultDirectoryBinding };
 		}
 		open = false;
 	};
@@ -80,40 +92,88 @@
 	const actionValues = valuesToOptions(bindingActions);
 
 	const onSelectedAction = (item: any) => {
-		action = item.value;
+		binding.action = item.value;
 	};
 
 	const text = $derived(
 		action === 'move' ? `Move to ${directory}` : action === 'delete' ? 'Delete' : 'Skip'
 	);
+
+	let showIconPicker = $state(false);
+	const onChooseIcon = (newIcon: string) => {
+		binding.icon = newIcon;
+		showIconPicker = false;
+	};
+
+	$effect(() => {
+		if (!open) {
+			binding = { directory, action, key, icon };
+		}
+	});
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root bind:open openFocus="#save">
 	{#if !hidden}
 		<Dialog.Trigger asChild let:builder>
 			<Button class="flex w-full items-center gap-4" builders={[builder]} variant="ghost">
 				<kbd class="kbd">{key}</kbd>
+				<span>{icon}</span>
 				<span>{text}</span>
 			</Button>
 		</Dialog.Trigger>
 	{/if}
-	<Dialog.Content>
+	<Dialog.Content class="max-h-[90vh] overflow-auto">
 		<Dialog.Header>
 			<Dialog.Title>
 				<h3 class="h3">{index >= 0 ? 'Edit' : 'Create'} binding</h3>
 			</Dialog.Title>
 		</Dialog.Header>
 
-		<div class="flex flex-col gap-4">
-			<div class="flex items-center gap-4">
-				<span class="large">Key binding</span>
-				<Button variant="outline" on:click={onClickChooseKey}>
-					{choosingKey ? 'Listening...' : `${key ? 'Change' : 'Choose'} key`}
-				</Button>
+		<div class="flex flex-col gap-2">
+			<div class="grid grid-cols-2">
+				<div>
+					<div class="mt-6 flex items-center gap-4">
+						<span class="large">Icon</span>
+						<InputTooltip
+							>{#snippet content()}
+								This is shown on the sorting page as a reminder of what the binding does
+							{/snippet}</InputTooltip
+						>
+					</div>
+					<Popover.Root bind:open={showIconPicker}>
+						<Popover.Trigger asChild let:builder>
+							<Button variant="ghost" class="w-fit" title="Change icon" builders={[builder]}>
+								<div class="small">{binding.icon || 'None'}</div>
+							</Button>
+						</Popover.Trigger>
+						<Popover.Content>
+							<EmojiSearch onchoose={onChooseIcon} />
+						</Popover.Content>
+					</Popover.Root>
+				</div>
+				<div>
+					<div class="mt-6 flex items-center gap-4">
+						<span class="large">Key</span>
+						<InputTooltip
+							>{#snippet content()}
+								Pressing this key will trigger the chosen action while in the sorter
+							{/snippet}</InputTooltip
+						>
+					</div>
+					<Button variant="ghost" class="w-fit" on:click={onClickChooseKey} title="Change key">
+						<kbd class="kbd">{choosingKey ? 'Listening' : binding.key || 'None'}</kbd>
+					</Button>
+				</div>
 			</div>
-			<kbd class="kbd">{key || 'None'}</kbd>
 
-			<span class="large">Action</span>
+			<div class="mt-6 flex items-center gap-4">
+				<span class="large">Action</span>
+				<InputTooltip
+					>{#snippet content()}
+						Choose the action that will be taken when the key is pressed
+					{/snippet}</InputTooltip
+				>
+			</div>
 			<Select.Root
 				selected={getInitialOption(actionValues, action)}
 				onSelectedChange={onSelectedAction}
@@ -128,18 +188,24 @@
 				</Select.Content>
 			</Select.Root>
 
-			{#if action === 'move'}
-				<div class="mt-2 flex items-center gap-2">
-					<span class="large">Target directory</span>
-					<Button variant="outline" on:click={onClickChooseDirectory}>
-						{directory ? 'Change' : 'Choose'} directory
-					</Button>
-				</div>
-				<div class="small">{directory || 'None'}</div>
+			<!-- description -->
+			{#if binding.action === 'delete'}
+				<div class="muted">Files will be deleted without possibility of recovery</div>
+			{:else if binding.action === 'skip'}
+				<div class="muted">Files will be moved to the back of the queue</div>
+			{:else if binding.action === 'move'}
+				<div class="muted">Files will be moved to the specified directory</div>
+			{/if}
+
+			{#if binding.action === 'move'}
+				<span class="large">Target directory</span>
+				<Button variant="ghost" on:click={onClickChooseDirectory}>
+					<div class="small w-full text-start">{directory || 'None'}</div>
+				</Button>
 			{/if}
 
 			<div class="mt-8 flex gap-2">
-				<Button variant="default" on:click={onClickSave}>Save</Button>
+				<Button variant="default" on:click={onClickSave} id="save">Save</Button>
 				{#if index !== -1}
 					<Button variant="destructive" on:click={onClickDelete}>Delete</Button>
 				{/if}

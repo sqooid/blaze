@@ -14,6 +14,9 @@ importers:
       '@tauri-apps/plugin-fs':
         specifier: ~2
         version: 2.0.1
+      emojilib:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       '@internationalized/date':
         specifier: ^3.5.6
@@ -1018,6 +1021,9 @@ packages:
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  emojilib@4.0.0:
+    resolution: {integrity: sha512-nHdbvbIuWi/KrZESwJw5meOSK6S3uokcvBooIpNp9leDtVJWW091drLm8pwF2B7JrMq0UPgGJ7Haw+myeRaU8g==}
 
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
@@ -2978,6 +2984,8 @@ snapshots:
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
+
+  emojilib@4.0.0: {}
 
   entities@4.5.0: {}
 

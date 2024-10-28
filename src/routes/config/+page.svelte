@@ -29,6 +29,7 @@
 			directory={binding.directory}
 			key={binding.key}
 			action={binding.action}
+			icon={binding.icon}
 			index={i}
 			open={false}
 			hidden={false}

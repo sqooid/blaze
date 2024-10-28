@@ -16,12 +16,14 @@ export type DirectoryBinding = {
 	key: string;
 	action: (typeof bindingActions)[number];
 	directory: string;
+	icon: string;
 };
 
 export const defaultDirectoryBinding: DirectoryBinding = {
 	key: '',
 	action: 'move',
-	directory: ''
+	directory: '',
+	icon: ''
 };
 
 export type AppConfig = {
