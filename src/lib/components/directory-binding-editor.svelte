@@ -108,6 +108,8 @@
 	$effect(() => {
 		if (!open) {
 			binding = { directory, action, key, icon };
+			document.removeEventListener('keydown', keyListener);
+			choosingKey = false;
 		}
 	});
 </script>
