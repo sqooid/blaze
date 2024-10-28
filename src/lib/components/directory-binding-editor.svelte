@@ -59,11 +59,11 @@
 	};
 
 	const onClickSave = () => {
-		if (!key) {
+		if (!binding.key) {
 			toast.error('Please choose a key');
 			return;
 		}
-		if (!directory && action === 'move') {
+		if (!binding.directory && binding.action === 'move') {
 			toast.error('Please choose a directory');
 			return;
 		}
