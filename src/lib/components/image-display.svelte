@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	import { toast } from 'svelte-sonner';
-	import { appConfig, type DirectoryBinding } from './config';
+	import { appConfig, type DirectoryBinding } from './config.svelte';
 	import { appState } from './state.svelte';
 
 	const currentImageName = $derived(appState.currentFile);
-	const srcDir = $derived(appConfig.value.sourceDirectory);
+	const srcDir = $derived(appConfig.currentWorkflow.sourceDirectory);
 	const currentImagePath = $derived(`${srcDir}/${currentImageName}`);
 	const currentImageUrl = $derived(convertFileSrc(currentImagePath));
 
 	const bindMap = $derived(
-		appConfig.value.directoryBindings.reduce(
+		appConfig.currentWorkflow.directoryBindings.reduce(
 			(acc, binding) => {
 				acc[binding.key] = binding;
 				return acc;
@@ -47,7 +47,7 @@
 
 	const preloadImages = $derived(
 		appState.fileList.frontBuffer.map((f) =>
-			convertFileSrc(`${appConfig.value.sourceDirectory}/${f}`)
+			convertFileSrc(`${appConfig.currentWorkflow.sourceDirectory}/${f}`)
 		)
 	);
 

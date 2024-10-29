@@ -3,16 +3,18 @@
 
 	type Props = {
 		name: string;
-		tip: string;
+		tip?: string;
 	};
 	let { name, tip }: Props = $props();
 </script>
 
 <div class="flex items-center gap-2">
 	<span class="">{name}</span>
-	<InputTooltip>
-		{#snippet content()}
-			{tip}
-		{/snippet}
-	</InputTooltip>
+	{#if tip}
+		<InputTooltip>
+			{#snippet content()}
+				{tip}
+			{/snippet}
+		</InputTooltip>
+	{/if}
 </div>

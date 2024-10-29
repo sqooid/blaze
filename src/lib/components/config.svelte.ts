@@ -38,10 +38,13 @@ export const defaultDirectoryBinding: DirectoryBinding = {
 	icon: ''
 };
 
-export type AppConfig = {
-	directoryBindings: DirectoryBinding[];
+export const workflowTypes = ['sort', 'compare'] as const;
+
+export type Workflow = {
+	type: (typeof workflowTypes)[number];
+
 	sourceDirectory: string;
-	progressDisplay: (typeof progressDisplays)[number];
+	directoryBindings: DirectoryBinding[];
 	showBindingReminder: boolean;
 	reminderPosition: (typeof reminderPositions)[number];
 	reminderOrientation: (typeof reminderOrientations)[number];
@@ -51,16 +54,41 @@ export type AppConfig = {
 	compareOrientation: (typeof compareOrientations)[number];
 };
 
-const defaultAppConfig: AppConfig = {
-	directoryBindings: [],
-	sourceDirectory: '',
-	progressDisplay: 'bar',
-	showBindingReminder: true,
-	reminderPosition: 'top left',
-	reminderOrientation: 'vertical',
-	reminderOpacity: 10,
-	compareGroupMatcher: '',
-	compareOrientation: 'horizontal'
+export type AppConfigInner = {
+	progressDisplay: (typeof progressDisplays)[number];
+	workflows: Record<string, Workflow>;
+	currentWorkflow: string;
 };
 
-export const appConfig = persistedState('appConfig', defaultAppConfig);
+export class AppConfig {
+	#inner = persistedState('appConfig', defaultAppConfig);
+
+	workflowNames = $derived(Object.keys(this.value.workflows));
+
+	get value() {
+		return this.#inner.value;
+	}
+	get currentWorkflow() {
+		return this.value.workflows[this.value.currentWorkflow];
+	}
+}
+
+const defaultAppConfig: AppConfigInner = {
+	progressDisplay: 'bar',
+	currentWorkflow: 'default',
+	workflows: {
+		default: {
+			type: 'sort',
+			directoryBindings: [],
+			sourceDirectory: '',
+			showBindingReminder: true,
+			reminderPosition: 'top left',
+			reminderOrientation: 'vertical',
+			reminderOpacity: 10,
+			compareGroupMatcher: '^img_(\\d+)_(\\d+)',
+			compareOrientation: 'horizontal'
+		}
+	}
+};
+
+export const appConfig = new AppConfig();

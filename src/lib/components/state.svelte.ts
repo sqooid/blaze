@@ -1,5 +1,5 @@
 import { BlazeLinkedList } from '$lib/linked-list.svelte';
-import { appConfig } from './config';
+import { appConfig } from './config.svelte';
 import { deleteFile, moveFile } from './fs';
 
 class AppState {
@@ -37,7 +37,7 @@ class AppState {
 		const current = this.snapshotCurrent();
 		if (current) {
 			this.fileList.removeFirst();
-			await deleteFile(current, appConfig.value.sourceDirectory);
+			await deleteFile(current, appConfig.currentWorkflow.sourceDirectory);
 		}
 	}
 
@@ -45,9 +45,9 @@ class AppState {
 		const current = this.snapshotCurrent();
 		if (current) {
 			this.fileList.removeFirst();
-			console.log(current, appConfig.value.sourceDirectory, targetDir);
+			console.log(current, appConfig.currentWorkflow.sourceDirectory, targetDir);
 
-			await moveFile(current, appConfig.value.sourceDirectory, targetDir);
+			await moveFile(current, appConfig.currentWorkflow.sourceDirectory, targetDir);
 		}
 	}
 

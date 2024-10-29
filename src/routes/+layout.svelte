@@ -7,7 +7,7 @@
 	import Header from './header.svelte';
 	import { watchImmediate, readDir } from '@tauri-apps/plugin-fs';
 	import { basename } from '@tauri-apps/api/path';
-	import { appConfig } from '$lib/components/config';
+	import { appConfig } from '$lib/components/config.svelte';
 	import { appState } from '$lib/components/state.svelte';
 
 	let { children } = $props();
@@ -43,11 +43,11 @@
 
 	let unwatchFn: () => void = () => {};
 	$effect(() => {
-		if (appConfig.value.sourceDirectory !== oldSource) {
+		if (appConfig.currentWorkflow.sourceDirectory !== oldSource) {
 			appState.reset();
-			readWholeDir(appConfig.value.sourceDirectory);
+			readWholeDir(appConfig.currentWorkflow.sourceDirectory);
 			unwatchFn?.();
-			watchDir(appConfig.value.sourceDirectory).then((fn) => {
+			watchDir(appConfig.currentWorkflow.sourceDirectory).then((fn) => {
 				unwatchFn = fn;
 			});
 		}

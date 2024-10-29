@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
-	import { Button } from './ui/button';
-	import { open as openPicker } from '@tauri-apps/plugin-dialog';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Popover from '$lib/components/ui/popover';
+	import * as Select from '$lib/components/ui/select';
+	import { open as openPicker } from '@tauri-apps/plugin-dialog';
+	import { toast } from 'svelte-sonner';
 	import {
-		appConfig,
 		bindingActions,
 		defaultDirectoryBinding,
 		getInitialOption,
 		valuesToOptions,
 		type DirectoryBinding
-	} from './config';
-	import * as Select from '$lib/components/ui/select';
+	} from './config.svelte';
 	import EmojiSearch from './emoji-search.svelte';
 	import InputTooltip from './input-tooltip.svelte';
+	import { Button } from './ui/button';
 
 	type Props = {
+		bindings: DirectoryBinding[];
 		directory: string;
 		action: DirectoryBinding['action'];
 		key: string;
@@ -26,6 +26,7 @@
 		hidden: boolean;
 	};
 	let {
+		bindings,
 		directory,
 		action,
 		key,
@@ -67,16 +68,14 @@
 			toast.error('Please choose a directory');
 			return;
 		}
-		if (
-			appConfig.value.directoryBindings.some((other, i) => i !== index && other.key === binding.key)
-		) {
+		if (bindings.some((other, i) => i !== index && other.key === binding.key)) {
 			toast.error('Key already in use');
 			return;
 		}
 		if (index === -1) {
-			appConfig.value.directoryBindings.push(binding);
+			bindings.push(binding);
 		} else {
-			appConfig.value.directoryBindings[index] = $state.snapshot(binding);
+			bindings[index] = $state.snapshot(binding);
 		}
 		if (index === -1) {
 			binding = { ...defaultDirectoryBinding };
@@ -85,7 +84,7 @@
 	};
 
 	const onClickDelete = () => {
-		appConfig.value.directoryBindings.splice(index, 1);
+		bindings.splice(index, 1);
 		open = false;
 	};
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
-	import { getInitialOption, valuesToOptions } from './config';
+	import { getInitialOption, valuesToOptions } from './config.svelte';
 
 	type Props = {
 		values: string[] | ReadonlyArray<string>;
@@ -10,7 +10,7 @@
 	};
 	let { values, value = $bindable(), placeholder = '', class: className }: Props = $props();
 
-	const options = valuesToOptions(values);
+	const options = $derived(valuesToOptions(values));
 </script>
 
 <Select.Root

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import BindingsReminder from '$lib/components/bindings-reminder.svelte';
-	import { appConfig } from '$lib/components/config';
+	import { appConfig } from '$lib/components/config.svelte';
 	import ImageDisplay from '$lib/components/image-display.svelte';
 	import { appState } from '$lib/components/state.svelte';
 	import Progress from '$lib/components/ui/progress/progress.svelte';
 </script>
 
-{#if !appConfig.value.sourceDirectory}
+{#if !appConfig.currentWorkflow.sourceDirectory}
 	<div class="fixed bottom-0 left-0 right-0 top-14 flex items-center">
 		<div class="comment muted">Choose a source directory to start sorting</div>
 	</div>
@@ -29,7 +29,7 @@
 	{/if}
 {/if}
 
-{#if appConfig.value.showBindingReminder}
+{#if appConfig.currentWorkflow.showBindingReminder}
 	<BindingsReminder />
 {/if}
 

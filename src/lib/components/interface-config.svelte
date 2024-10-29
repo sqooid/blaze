@@ -9,7 +9,7 @@
 		reminderOrientations,
 		reminderPositions,
 		valuesToOptions
-	} from './config';
+	} from './config.svelte';
 	import InputTooltip from './input-tooltip.svelte';
 	import { Slider } from './ui/slider';
 
@@ -56,18 +56,21 @@
 		'Show binding reminder',
 		'Choose whether the binding reminder should be shown on the screen'
 	)}
-	<Switch bind:checked={appConfig.value.showBindingReminder} />
+	<Switch bind:checked={appConfig.currentWorkflow.showBindingReminder} />
 </div>
 
-{#if appConfig.value.showBindingReminder}
+{#if appConfig.currentWorkflow.showBindingReminder}
 	<div class="flex items-center justify-between gap-4">
 		{@render interfaceLabel(
 			'Binding reminder position',
 			'Choose where the binding reminder should be placed on the screen. This would depend on the aspect ratio of your window and images'
 		)}
 		<Select.Root
-			selected={getInitialOption(reminderPositionOptions, appConfig.value.reminderPosition)}
-			onSelectedChange={(e) => (appConfig.value.reminderPosition = e?.value as any)}
+			selected={getInitialOption(
+				reminderPositionOptions,
+				appConfig.currentWorkflow.reminderPosition
+			)}
+			onSelectedChange={(e) => (appConfig.currentWorkflow.reminderPosition = e?.value as any)}
 		>
 			<Select.Trigger class="w-32">
 				<Select.Value placeholder="" />
@@ -86,8 +89,11 @@
 			'Choose whether the binding reminder should be horizontal or vertical'
 		)}
 		<Select.Root
-			selected={getInitialOption(reminderOrientationOptions, appConfig.value.reminderOrientation)}
-			onSelectedChange={(e) => (appConfig.value.reminderOrientation = e?.value as any)}
+			selected={getInitialOption(
+				reminderOrientationOptions,
+				appConfig.currentWorkflow.reminderOrientation
+			)}
+			onSelectedChange={(e) => (appConfig.currentWorkflow.reminderOrientation = e?.value as any)}
 		>
 			<Select.Trigger class="w-32">
 				<Select.Value placeholder="" />
@@ -110,8 +116,8 @@
 			min={0}
 			max={100}
 			step={1}
-			value={[appConfig.value.reminderOpacity]}
-			onValueChange={(e) => (appConfig.value.reminderOpacity = e[0])}
+			value={[appConfig.currentWorkflow.reminderOpacity]}
+			onValueChange={(e) => (appConfig.currentWorkflow.reminderOpacity = e[0])}
 		/>
 	</div>
 {/if}
