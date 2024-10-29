@@ -10,7 +10,11 @@ class AppState {
 
 	#totalCount = $state(0);
 
-	sortedCompareKeys = $derived(Object.keys(this.compareGroups).sort());
+	sortedCompareKeys = $derived(
+		Object.keys(this.compareGroups)
+			.filter((x) => this.compareGroups[x].length)
+			.sort()
+	);
 	currentCompareKey = $derived(this.sortedCompareKeys.at(0) ?? '');
 	currentCompareImages = $derived(this.compareGroups[this.currentCompareKey] ?? []);
 
@@ -74,7 +78,13 @@ class AppState {
 		return $state.snapshot(this.currentFile);
 	}
 
-	async deleteCurrent() {
+	async deleteCurrent(file?: string) {
+		if (file) {
+			const index = this.currentCompareImages.indexOf(file);
+			this.compareGroups[this.currentCompareKey].splice(index, 1);
+			await deleteFile(file, appConfig.currentWorkflow.sourceDirectory);
+			return;
+		}
 		const current = this.snapshotCurrent();
 		if (current) {
 			this.fileList.removeFirst();
@@ -82,12 +92,17 @@ class AppState {
 		}
 	}
 
-	async moveCurrent(targetDir: string) {
+	async moveCurrent(targetDir: string, file?: string) {
+		if (file) {
+			const index = this.currentCompareImages.indexOf(file);
+			this.compareGroups[this.currentCompareKey].splice(index, 1);
+			await moveFile(file, appConfig.currentWorkflow.sourceDirectory, targetDir);
+			return;
+		}
 		const current = this.snapshotCurrent();
 		if (current) {
 			this.fileList.removeFirst();
 			console.log(current, appConfig.currentWorkflow.sourceDirectory, targetDir);
-
 			await moveFile(current, appConfig.currentWorkflow.sourceDirectory, targetDir);
 		}
 	}

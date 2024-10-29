@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { convertFileSrc } from '@tauri-apps/api/core';
-	import { toast } from 'svelte-sonner';
 	import { appConfig, type DirectoryBinding } from './config.svelte';
 	import { appState } from './state.svelte';
 
@@ -17,6 +16,7 @@
 	);
 
 	const imageNames = $derived(appState.currentCompareImages);
+	$inspect(imageNames).with(console.log);
 	const imagePaths = $derived(imageNames.map((f) => `${srcDir}/${f}`));
 	const imageUrls = $derived(imagePaths.map((f) => convertFileSrc(f)));
 
@@ -25,11 +25,11 @@
 		let action = '';
 		if (binding.action === 'move') {
 			action = 'Moved';
-			appState.moveCurrent(binding.directory);
+			appState.moveCurrent(binding.directory, name);
 			console.log(`Moved ${name} to ${binding.directory}`);
 		} else if (binding.action === 'delete') {
 			action = 'Deleted';
-			appState.deleteCurrent();
+			appState.deleteCurrent(name);
 			console.log(`Deleted ${name}`);
 		} else if (binding.action === 'skip') {
 			action = 'Skipped';
@@ -40,9 +40,11 @@
 
 	const keyListener = $derived(async (event: KeyboardEvent) => {
 		if (bindMap[event.key]) {
-			// const binding = bindMap[event.key];
-			// const name = currentImageName;
-			// runBinding(binding, name);
+			const binding = bindMap[event.key];
+			if (activeImage) {
+				runBinding(binding, activeImage);
+				activeImage = '';
+			}
 		}
 	});
 
@@ -112,6 +114,8 @@
 			appConfig.currentWorkflow.compareOrientation
 		]
 	);
+
+	$inspect(activeImage).with(console.log);
 </script>
 
 <svelte:document onkeydown={keyListener} onwheel={onWheel} />
@@ -122,17 +126,21 @@
 {/each}
 
 <div class={`flex gap-[1px] ${containerClass}`}>
-	{#each imageUrls as f, i}
+	{#each imageNames as f, i (f)}
 		<img
-			src={f}
+			src={imageUrls[i]}
 			alt=""
-			style={containerStyle}
-			class={`transition-all hover:opacity-90 hover:transition-all ${imageClass}`}
+			style:opacity={activeImage === f ? 0.8 : 1}
+			style={`${containerStyle}`}
+			class={`transition-all hover:transition-all ${imageClass}`}
 			onerror={(e) => {
 				onLoadError(e, i);
 			}}
+			onmousemove={() => {
+				activeImage = f;
+			}}
 			onmouseenter={() => {
-				activeImage = imageNames[i];
+				activeImage = f;
 			}}
 			onmouseleave={() => {
 				activeImage = '';
