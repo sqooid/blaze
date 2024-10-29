@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Settings, Bolt } from 'lucide-svelte/icons';
-	import { open as openPicker } from '@tauri-apps/plugin-dialog';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { appConfig } from '$lib/components/config.svelte';
 	import ModeToggle from '$lib/components/mode-toggle.svelte';
-	import { page } from '$app/stores';
-	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { appState } from '$lib/components/state.svelte';
-	import * as Select from '$lib/components/ui/select';
-	import { goto } from '$app/navigation';
 	import SelectWrapper from '$lib/components/select-wrapper.svelte';
+	import { appState } from '$lib/components/state.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { Bolt, Settings } from 'lucide-svelte/icons';
+
+	const onCreateWorkflow = () => {
+		const name = appConfig.createNewWorkflow();
+		goto('/workflow');
+	};
 </script>
 
 <div
@@ -29,6 +32,8 @@
 			values={appConfig.workflowNames}
 			bind:value={appConfig.value.currentWorkflow}
 			class="min-w-64"
+			extraValue="New workflow"
+			onExtraValue={onCreateWorkflow}
 		/>
 		<Button
 			variant="ghost"

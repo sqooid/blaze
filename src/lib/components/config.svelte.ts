@@ -66,13 +66,31 @@ export type AppConfigInner = {
 export class AppConfig {
 	#inner = persistedState('appConfig', defaultAppConfig);
 
+	value = $derived(this.#inner.value);
 	workflowNames = $derived(Object.keys(this.value.workflows));
+	currentWorkflow = $derived(this.value.workflows[this.value.currentWorkflow]);
 
-	get value() {
-		return this.#inner.value;
+	createNewWorkflow() {
+		let number = this.workflowNames.length + 1;
+		let name = `workflow ${number}`;
+		while (this.workflowNames.includes(name)) {
+			number += 1;
+			name = `workflow ${number}`;
+		}
+		const workflow: Workflow = { ...defaultAppConfig.workflows.default };
+		this.value.workflows[name] = workflow;
+		this.value.currentWorkflow = name;
+		return name;
 	}
-	get currentWorkflow() {
-		return this.value.workflows[this.value.currentWorkflow];
+
+	deleteCurrentWorkflow() {
+		if (this.workflowNames.length === 1) {
+			return false;
+		}
+		const currentWorkflowName = $state.snapshot(this.value.currentWorkflow);
+		this.#inner.value.currentWorkflow = this.workflowNames[0];
+		delete this.#inner.value.workflows[currentWorkflowName];
+		return true;
 	}
 }
 

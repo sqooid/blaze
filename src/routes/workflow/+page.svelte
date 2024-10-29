@@ -34,7 +34,6 @@
 
 	let oldWorkflow = '';
 
-	let initial = $state(true);
 	$effect(() => {
 		if (appConfig.value.currentWorkflow !== oldWorkflow) {
 			oldWorkflow = appConfig.value.currentWorkflow;
@@ -71,8 +70,17 @@
 		if (!isEqual(values, oldValues) || name !== appConfig.value.currentWorkflow) {
 			toast.error('You have unsaved changes');
 			e.cancel();
+			console.log($state.snapshot(values));
+			console.log($state.snapshot(oldValues));
 		}
 	});
+
+	const onDelete = () => {
+		const result = appConfig.deleteCurrentWorkflow();
+		if (!result) {
+			toast.error('Cannot delete the last workflow');
+		}
+	};
 </script>
 
 <DirectoryBindingEditor
@@ -85,9 +93,10 @@
 
 <div class="mx-auto mb-24 flex max-w-prose flex-col gap-4 p-4">
 	<h1 class="h1">Workflow config</h1>
-	<div class="my-6 grid grid-cols-[1fr_auto] gap-8">
+	<div class="my-6 grid grid-cols-[1fr_auto_auto] gap-8">
 		<Button on:click={onSave}>Save changes</Button>
-		<Button on:click={onSave} variant="ghost">Discard changes</Button>
+		<Button on:click={onCancel} variant="ghost">Discard changes</Button>
+		<Button on:click={onDelete} variant="destructive">Delete</Button>
 	</div>
 	<SettingContainer>
 		<SettingLabel name="Workflow name" />

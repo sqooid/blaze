@@ -69,7 +69,6 @@ class AppState {
 				} else {
 					this.compareGroups[key] = [name];
 				}
-				console.log($state.snapshot(this.compareGroups));
 			}
 		}
 	}

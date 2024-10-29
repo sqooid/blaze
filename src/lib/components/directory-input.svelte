@@ -6,7 +6,7 @@
 		value: string;
 		class?: string;
 	};
-	let { value = $bindable(''), class: classs }: Props = $props();
+	let { value = $bindable(), class: classs }: Props = $props();
 
 	const onClick = async () => {
 		const directory = await openPicker({
