@@ -16,16 +16,18 @@
 	const orientation = $derived(appConfig.currentWorkflow.reminderOrientation);
 </script>
 
-<div class={`fixed ${reminderPositionsMap[position][0]} flex`}>
-	<div
-		style={`--tw-bg-opacity: ${appConfig.currentWorkflow.reminderOpacity / 100}`}
-		class={`left-0 top-14 m-2 flex gap-4 rounded-md bg-white bg-opacity-[${appConfig.currentWorkflow.reminderOpacity}%] p-2 ${orientation === 'horizontal' ? '' : 'flex-col'} ${reminderPositionsMap[position][1]}`}
-	>
-		{#each appConfig.currentWorkflow.directoryBindings as binding}
-			<div class="flex items-center gap-1">
-				<kbd class="kbd">{binding.key}</kbd>
-				<span>{binding.icon}</span>
-			</div>
-		{/each}
+{#if appConfig.currentWorkflow.directoryBindings.length > 0}
+	<div class={`fixed ${reminderPositionsMap[position][0]} flex`}>
+		<div
+			style={`--tw-bg-opacity: ${appConfig.currentWorkflow.reminderOpacity / 100}`}
+			class={`left-0 top-14 m-2 flex gap-4 rounded-md bg-white bg-opacity-[${appConfig.currentWorkflow.reminderOpacity}%] p-2 ${orientation === 'horizontal' ? '' : 'flex-col'} ${reminderPositionsMap[position][1]}`}
+		>
+			{#each appConfig.currentWorkflow.directoryBindings as binding}
+				<div class="flex items-center gap-1">
+					<kbd class="kbd">{binding.key}</kbd>
+					<span>{binding.icon}</span>
+				</div>
+			{/each}
+		</div>
 	</div>
-</div>
+{/if}
