@@ -44,6 +44,7 @@ export type AppConfig = {
 	showBindingReminder: boolean;
 	reminderPosition: (typeof reminderPositions)[number];
 	reminderOrientation: (typeof reminderOrientations)[number];
+	reminderOpacity: number;
 };
 
 const defaultAppConfig: AppConfig = {
@@ -52,7 +53,8 @@ const defaultAppConfig: AppConfig = {
 	progressDisplay: 'bar',
 	showBindingReminder: true,
 	reminderPosition: 'top left',
-	reminderOrientation: 'vertical'
+	reminderOrientation: 'vertical',
+	reminderOpacity: 10
 };
 
 export const appConfig = persistedState('appConfig', defaultAppConfig);

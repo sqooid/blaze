@@ -18,7 +18,8 @@
 
 <div class={`fixed ${reminderPositionsMap[position][0]} flex`}>
 	<div
-		class={`left-0 top-14 m-2 flex gap-4 rounded-md bg-white bg-opacity-30 p-2 ${orientation === 'horizontal' ? '' : 'flex-col'} ${reminderPositionsMap[position][1]}`}
+		style={`--tw-bg-opacity: ${appConfig.value.reminderOpacity / 100}`}
+		class={`left-0 top-14 m-2 flex gap-4 rounded-md bg-white bg-opacity-[${appConfig.value.reminderOpacity}%] p-2 ${orientation === 'horizontal' ? '' : 'flex-col'} ${reminderPositionsMap[position][1]}`}
 	>
 		{#each appConfig.value.directoryBindings as binding}
 			<div class="flex items-center gap-1">

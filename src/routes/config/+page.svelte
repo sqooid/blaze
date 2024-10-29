@@ -19,9 +19,9 @@
 />
 
 <div class="mx-auto flex max-w-prose flex-col gap-4 p-4">
-	<h2 class="h2">Configuration</h2>
+	<h1 class="h1">Configuration</h1>
 	<div class="flex items-center gap-2">
-		<h3 class="h3">Key bindings</h3>
+		<h2 class="h2">Key bindings</h2>
 		<Button variant="outline" on:click={onClickAddBinding}>Add binding</Button>
 	</div>
 	{#each appConfig.value.directoryBindings as binding, i}
@@ -35,6 +35,6 @@
 			hidden={false}
 		/>
 	{/each}
-	<h3 class="h3">Interface</h3>
+	<h2 class="h2">Interface</h2>
 	<InterfaceConfig />
 </div>

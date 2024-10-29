@@ -11,6 +11,7 @@
 		valuesToOptions
 	} from './config';
 	import InputTooltip from './input-tooltip.svelte';
+	import { Slider } from './ui/slider';
 
 	const progressDisplayOptions = valuesToOptions(progressDisplays);
 	const reminderPositionOptions = valuesToOptions(reminderPositions);
@@ -19,7 +20,7 @@
 
 {#snippet interfaceLabel(name: string, tip: string)}
 	<div class="flex items-center gap-2">
-		<span class="large">{name}</span>
+		<span class="">{name}</span>
 		<InputTooltip>
 			{#snippet content()}
 				{tip}
@@ -97,3 +98,17 @@
 		</Select.Root>
 	</div>
 {/if}
+
+<div class="flex items-center justify-between gap-4">
+	{@render interfaceLabel(
+		'Binding reminder background opacity',
+		'Opaqueness of the background of the binding reminder'
+	)}
+	<Slider
+		min={0}
+		max={100}
+		step={1}
+		value={[appConfig.value.reminderOpacity]}
+		onValueChange={(e) => (appConfig.value.reminderOpacity = e[0])}
+	/>
+</div>
