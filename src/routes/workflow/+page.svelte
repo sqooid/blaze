@@ -31,6 +31,7 @@
 
 	const onCancel = () => {
 		resetOldValues();
+		name = appConfig.value.currentWorkflow;
 		goto('/');
 	};
 
