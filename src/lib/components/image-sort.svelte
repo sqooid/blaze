@@ -46,7 +46,7 @@
 	});
 
 	const preloadImages = $derived(
-		appState.fileList.frontBuffer.map((f) =>
+		appState.bufferImages.map((f) =>
 			convertFileSrc(`${appConfig.currentWorkflow.sourceDirectory}/${f}`)
 		)
 	);
@@ -54,7 +54,7 @@
 	const onLoadError = (e: any) => {
 		console.log('Error loading image', e);
 		toast.error(`Error loading image, skipped ${currentImageName}`);
-		appState.removeCurrent();
+		appState.removeCurrentInvalid();
 	};
 </script>
 

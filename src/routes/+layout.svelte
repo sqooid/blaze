@@ -58,6 +58,6 @@
 <ModeWatcher />
 <Toaster />
 <Header />
-<div class="mt-14 bg-background">
+<div class="mt-14 bg-background" id="layout">
 	{@render children()}
 </div>

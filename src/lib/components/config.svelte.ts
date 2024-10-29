@@ -15,6 +15,7 @@ export const reminderPositions = [
 ] as const;
 export const reminderOrientations = ['horizontal', 'vertical'] as const;
 export const compareOrientations = ['horizontal', 'vertical'] as const;
+export const compareBoxes = ['fill', 'fit'] as const;
 
 export const valuesToOptions = (values: Readonly<string[]>) =>
 	values.map((value) => ({ value, label: capitalise(value) }));
@@ -52,6 +53,8 @@ export type Workflow = {
 
 	compareGroupMatcher: string;
 	compareOrientation: (typeof compareOrientations)[number];
+	compareBox: (typeof compareBoxes)[number];
+	compareConvertScroll: boolean;
 };
 
 export type AppConfigInner = {
@@ -86,7 +89,9 @@ const defaultAppConfig: AppConfigInner = {
 			reminderOrientation: 'vertical',
 			reminderOpacity: 10,
 			compareGroupMatcher: '^img_(\\d+)_(\\d+)',
-			compareOrientation: 'horizontal'
+			compareOrientation: 'horizontal',
+			compareBox: 'fill',
+			compareConvertScroll: false
 		}
 	}
 };

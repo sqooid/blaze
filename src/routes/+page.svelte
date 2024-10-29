@@ -1,7 +1,8 @@
 <script lang="ts">
 	import BindingsReminder from '$lib/components/bindings-reminder.svelte';
 	import { appConfig } from '$lib/components/config.svelte';
-	import ImageDisplay from '$lib/components/image-display.svelte';
+	import ImageCompare from '$lib/components/image-compare.svelte';
+	import ImageDisplay from '$lib/components/image-sort.svelte';
 	import { appState } from '$lib/components/state.svelte';
 	import Progress from '$lib/components/ui/progress/progress.svelte';
 </script>
@@ -14,10 +15,8 @@
 	<div class="fixed bottom-0 left-0 right-0 top-14 flex items-center">
 		<div class="comment muted">Directory is empty</div>
 	</div>
-{:else}
-	<div class="img">
-		<ImageDisplay />
-	</div>
+{:else if appConfig.currentWorkflow.type === 'sort'}
+	<ImageDisplay />
 	{#if appConfig.value.progressDisplay === 'bar'}
 		<div class="fixed bottom-1 h-[1px] w-full opacity-30">
 			<Progress value={appState.progress} max={1} />
@@ -27,6 +26,8 @@
 			{appState.doneCount} / {appState.totalCount}
 		</div>
 	{/if}
+{:else if appConfig.currentWorkflow.type === 'compare'}
+	<ImageCompare />
 {/if}
 
 {#if appConfig.currentWorkflow.showBindingReminder}

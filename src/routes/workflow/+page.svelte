@@ -2,6 +2,7 @@
 	import { beforeNavigate, goto } from '$app/navigation';
 	import {
 		appConfig,
+		compareBoxes,
 		compareOrientations,
 		defaultDirectoryBinding,
 		workflowTypes
@@ -13,6 +14,7 @@
 	import SettingLabel from '$lib/components/setting-label.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { Switch } from '$lib/components/ui/switch';
 	import { isEqual } from 'lodash-es';
 	import { toast } from 'svelte-sonner';
 
@@ -136,6 +138,17 @@
 				bind:value={values.compareOrientation}
 				class="w-64"
 			/>
+		</SettingContainer>
+		<SettingContainer>
+			<SettingLabel name="Fill mode" />
+			<SelectWrapper values={compareBoxes} bind:value={values.compareBox} class="w-64" />
+		</SettingContainer>
+		<SettingContainer>
+			<SettingLabel
+				name="Convert scroll"
+				tip="When horizontal, whether to convert vertical scroll wheel movement into horizontal movement"
+			/>
+			<Switch bind:checked={values.compareConvertScroll} />
 		</SettingContainer>
 	{/if}
 </div>

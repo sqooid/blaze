@@ -6,7 +6,25 @@ class AppState {
 	fileList = $state(new BlazeLinkedList<string>(10));
 	currentFile = $derived(this.fileList.first);
 
+	compareGroups = $state<Record<string, string[]>>({});
+
 	#totalCount = $state(0);
+
+	sortedCompareKeys = $derived(Object.keys(this.compareGroups).sort());
+	currentCompareKey = $derived(this.sortedCompareKeys.at(0) ?? '');
+	currentCompareImages = $derived(this.compareGroups[this.currentCompareKey] ?? []);
+
+	bufferImages = $derived.by(() => {
+		if (appConfig.currentWorkflow.type === 'compare') {
+			const key = this.sortedCompareKeys.at(1);
+			if (key) {
+				return this.compareGroups[key];
+			}
+			return [];
+		} else {
+			return this.fileList.frontBuffer;
+		}
+	});
 
 	get progress() {
 		return (this.#totalCount - this.fileList.size) / this.#totalCount;
@@ -27,6 +45,29 @@ class AppState {
 	addFile(name: string) {
 		this.fileList.push(name);
 		this.#totalCount += 1;
+		if (appConfig.currentWorkflow.type === 'compare') {
+			const match = name.match(appConfig.currentWorkflow.compareGroupMatcher);
+			if (match) {
+				const tokens = [];
+				let first = true;
+				for (const x of match) {
+					if (first) {
+						first = false;
+						continue;
+					}
+					tokens.push(x);
+				}
+				const key = tokens.join('/');
+				if (this.compareGroups[key]) {
+					if (!this.compareGroups[key].includes(name)) {
+						this.compareGroups[key].push(name);
+					}
+				} else {
+					this.compareGroups[key] = [name];
+				}
+				console.log($state.snapshot(this.compareGroups));
+			}
+		}
 	}
 
 	snapshotCurrent() {
@@ -59,8 +100,9 @@ class AppState {
 		}
 	}
 
-	removeCurrent() {
+	removeCurrentInvalid() {
 		this.fileList.removeFirst();
+		this.#totalCount -= 1;
 	}
 
 	reset() {

@@ -13,7 +13,7 @@
 </script>
 
 <div
-	class="fixed left-0 right-0 top-0 flex h-14 justify-between border-b border-solid border-primary border-opacity-10 bg-background px-2 shadow-sm"
+	class="fixed left-0 right-0 top-0 z-10 flex h-14 justify-between border-b border-solid border-primary border-opacity-10 bg-background px-2 shadow-sm"
 >
 	<div class="flex items-center justify-center gap-x-2 px-1">
 		<Tooltip.Root openDelay={100} closeDelay={100}>
