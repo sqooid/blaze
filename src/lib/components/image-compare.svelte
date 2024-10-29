@@ -46,6 +46,21 @@
 				activeImage = '';
 			}
 		}
+		if (['ArrowRight', 'ArrowDown'].includes(event.key)) {
+			const index = imageNames.indexOf(activeImage);
+			if (index < imageNames.length - 1) {
+				activeImage = imageNames[index + 1];
+			}
+		}
+		if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+			let index = imageNames.indexOf(activeImage);
+			if (index === -1) {
+				index = imageNames.length;
+			}
+			if (index <= imageNames.length && index > 0) {
+				activeImage = imageNames[index - 1];
+			}
+		}
 	});
 
 	const onWheel = (e: WheelEvent) => {
@@ -130,7 +145,7 @@
 		<img
 			src={imageUrls[i]}
 			alt=""
-			style:opacity={activeImage === f ? 0.8 : 1}
+			style:opacity={activeImage === f ? 0.7 : 1}
 			style={`${containerStyle}`}
 			class={`transition-all hover:transition-all ${imageClass}`}
 			onerror={(e) => {
