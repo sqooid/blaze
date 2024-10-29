@@ -49,9 +49,11 @@
 	</Select.Root>
 </div>
 
+<h3 class="h3">Binding reminder</h3>
+
 <div class="flex items-center justify-between gap-4">
 	{@render interfaceLabel(
-		'Binding reminder',
+		'Show binding reminder',
 		'Choose whether the binding reminder should be shown on the screen'
 	)}
 	<Switch bind:checked={appConfig.value.showBindingReminder} />
@@ -97,18 +99,19 @@
 			</Select.Content>
 		</Select.Root>
 	</div>
-{/if}
 
-<div class="flex items-center justify-between gap-4">
-	{@render interfaceLabel(
-		'Binding reminder background opacity',
-		'Opaqueness of the background of the binding reminder'
-	)}
-	<Slider
-		min={0}
-		max={100}
-		step={1}
-		value={[appConfig.value.reminderOpacity]}
-		onValueChange={(e) => (appConfig.value.reminderOpacity = e[0])}
-	/>
-</div>
+	<div class="flex items-center justify-between gap-4">
+		{@render interfaceLabel(
+			'Binding reminder background opacity',
+			'Opaqueness of the background of the binding reminder'
+		)}
+		<Slider
+			class="w-48"
+			min={0}
+			max={100}
+			step={1}
+			value={[appConfig.value.reminderOpacity]}
+			onValueChange={(e) => (appConfig.value.reminderOpacity = e[0])}
+		/>
+	</div>
+{/if}

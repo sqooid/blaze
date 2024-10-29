@@ -7,6 +7,8 @@
 	import { page } from '$app/stores';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { appState } from '$lib/components/state.svelte';
+	import * as Select from '$lib/components/ui/select';
+	import { goto } from '$app/navigation';
 
 	const onChooseFolder = async () => {
 		const directory = await openPicker({
@@ -16,6 +18,11 @@
 		if (directory) {
 			appConfig.value.sourceDirectory = directory;
 		}
+	};
+
+	const onSelectMode = (e: any) => {
+		if (e.value === 'sort') goto('/');
+		else goto(`/${e.value}`);
 	};
 </script>
 
@@ -38,8 +45,16 @@
 			<div>{appState.remaining} items remaining</div>
 		</Tooltip.Content>
 	</Tooltip.Root>
-	<div class="flex items-center justify-center gap-x-2">
-		<a class="h1" href="/">Blaze</a>
+	<div class="flex items-center justify-center gap-x-2 px-1">
+		<Select.Root onSelectedChange={onSelectMode} selected={{ value: 'sort', label: 'Sort' }}>
+			<Select.Trigger class="">
+				<Select.Value placeholder="Mode" />
+			</Select.Trigger>
+			<Select.Content>
+				<Select.Item value="sort">Sort</Select.Item>
+				<Select.Item value="compare">Compare</Select.Item>
+			</Select.Content>
+		</Select.Root>
 	</div>
 	<div class="flex items-center justify-end gap-x-2">
 		<ModeToggle />

@@ -14,6 +14,7 @@ export const reminderPositions = [
 	'right'
 ] as const;
 export const reminderOrientations = ['horizontal', 'vertical'] as const;
+export const compareOrientations = ['horizontal', 'vertical'] as const;
 
 export const valuesToOptions = (values: Readonly<string[]>) =>
 	values.map((value) => ({ value, label: capitalise(value) }));
@@ -45,6 +46,9 @@ export type AppConfig = {
 	reminderPosition: (typeof reminderPositions)[number];
 	reminderOrientation: (typeof reminderOrientations)[number];
 	reminderOpacity: number;
+
+	compareGroupMatcher: string;
+	compareOrientation: (typeof compareOrientations)[number];
 };
 
 const defaultAppConfig: AppConfig = {
@@ -54,7 +58,9 @@ const defaultAppConfig: AppConfig = {
 	showBindingReminder: true,
 	reminderPosition: 'top left',
 	reminderOrientation: 'vertical',
-	reminderOpacity: 10
+	reminderOpacity: 10,
+	compareGroupMatcher: '',
+	compareOrientation: 'horizontal'
 };
 
 export const appConfig = persistedState('appConfig', defaultAppConfig);

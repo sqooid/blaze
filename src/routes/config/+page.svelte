@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CompareSettings from '$lib/components/compare-settings.svelte';
 	import { appConfig, defaultDirectoryBinding } from '$lib/components/config';
 	import DirectoryBindingEditor from '$lib/components/directory-binding-editor.svelte';
 	import InterfaceConfig from '$lib/components/interface-config.svelte';
@@ -18,10 +19,11 @@
 	hidden
 />
 
-<div class="mx-auto flex max-w-prose flex-col gap-4 p-4">
+<div class="mx-auto mb-24 flex max-w-prose flex-col gap-4 p-4">
 	<h1 class="h1">Configuration</h1>
+	<h2 class="h2">Sort settings</h2>
 	<div class="flex items-center gap-2">
-		<h2 class="h2">Key bindings</h2>
+		<h3 class="h3">Key bindings</h3>
 		<Button variant="outline" on:click={onClickAddBinding}>Add binding</Button>
 	</div>
 	{#each appConfig.value.directoryBindings as binding, i}
@@ -35,6 +37,8 @@
 			hidden={false}
 		/>
 	{/each}
+	<h2 class="h2">Compare settings</h2>
+	<CompareSettings />
 	<h2 class="h2">Interface</h2>
 	<InterfaceConfig />
 </div>
