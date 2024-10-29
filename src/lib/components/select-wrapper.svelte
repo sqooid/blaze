@@ -26,7 +26,7 @@
 <Select.Root
 	selected={value ? getInitialOption(options, value) : undefined}
 	onSelectedChange={(e) => {
-		if (extraValue && e?.value !== extraValue) value = e?.value;
+		value = e?.value;
 	}}
 >
 	<Select.Trigger class={className}>

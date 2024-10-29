@@ -15,14 +15,16 @@
 	import { Button } from '$lib/components/ui/button';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Switch } from '$lib/components/ui/switch';
-	import { isEqual } from 'lodash-es';
+	import { isEqual, cloneDeep } from 'lodash-es';
 	import { toast } from 'svelte-sonner';
 
 	const onSave = () => {
 		if (name !== appConfig.value.currentWorkflow) {
 			onChangeName(name);
 		}
-		appConfig.value.workflows[name] = values;
+		const newValues = cloneDeep($state.snapshot(values));
+		console.log(newValues);
+		appConfig.value.workflows[name] = newValues;
 		toast.success('Workflow saved');
 		resetOldValues();
 	};
@@ -70,8 +72,6 @@
 		if (!isEqual(values, oldValues) || name !== appConfig.value.currentWorkflow) {
 			toast.error('You have unsaved changes');
 			e.cancel();
-			console.log($state.snapshot(values));
-			console.log($state.snapshot(oldValues));
 		}
 	});
 
