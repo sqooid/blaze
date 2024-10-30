@@ -39,6 +39,7 @@ Download the latest installer release from Github [here](https://github.com/sqoo
 
 ## Planned features
 
+- Config import/export
+- Undo bind action
 - Visual feedback on binding press
 - Animation on next image
-- Undo bind action
